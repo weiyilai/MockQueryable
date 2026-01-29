@@ -10,13 +10,13 @@ Extensions for mocking [Entity Framework Core](https://github.com/dotnet/efcore)
 
 ## 📦 NuGet Packages
 
-| Package | Downloads | Latest Version | Install via Package Manager |
-|--------|-----------|----------------|------------------------------|
-| [MockQueryable.Core](https://www.nuget.org/packages/MockQueryable.Core/) | ![Downloads](https://img.shields.io/nuget/dt/MockQueryable.Core.svg) | ![Version](https://img.shields.io/nuget/v/MockQueryable.Core.svg) | `Install-Package MockQueryable.Core` |
-| [MockQueryable.EntityFrameworkCore](https://www.nuget.org/packages/MockQueryable.EntityFrameworkCore/) | ![Downloads](https://img.shields.io/nuget/dt/MockQueryable.EntityFrameworkCore.svg) | ![Version](https://img.shields.io/nuget/v/MockQueryable.EntityFrameworkCore.svg) | `Install-Package MockQueryable.EntityFrameworkCore` |
-| [MockQueryable.Moq](https://www.nuget.org/packages/MockQueryable.Moq/) | ![Downloads](https://img.shields.io/nuget/dt/MockQueryable.Moq.svg) | ![Version](https://img.shields.io/nuget/v/MockQueryable.Moq.svg) | `Install-Package MockQueryable.Moq` |
-| [MockQueryable.NSubstitute](https://www.nuget.org/packages/MockQueryable.NSubstitute/) | ![Downloads](https://img.shields.io/nuget/dt/MockQueryable.NSubstitute.svg) | ![Version](https://img.shields.io/nuget/v/MockQueryable.NSubstitute.svg) | `Install-Package MockQueryable.NSubstitute` |
-| [MockQueryable.FakeItEasy](https://www.nuget.org/packages/MockQueryable.FakeItEasy/) | ![Downloads](https://img.shields.io/nuget/dt/MockQueryable.FakeItEasy.svg) | ![Version](https://img.shields.io/nuget/v/MockQueryable.FakeItEasy.svg) | `Install-Package MockQueryable.FakeItEasy` |
+| Package | Latest Version | Install via Package Manager |
+|-------- |----------------|-----------------------------|
+|[![Download](https://img.shields.io/nuget/dt/MockQueryable.Core.svg?label=MockQueryable.Core)](https://www.nuget.org/packages/MockQueryable.Core/)|[![Version](https://img.shields.io/nuget/v/MockQueryable.Core.svg)](https://www.nuget.org/packages/MockQueryable.Core/)|`Install-Package MockQueryable.Core` |
+|[![Download](https://img.shields.io/nuget/dt/MockQueryable.EntityFrameworkCore.svg?label=MockQueryable.EntityFrameworkCore)](https://www.nuget.org/packages/MockQueryable.EntityFrameworkCore/)|[![Version](https://img.shields.io/nuget/v/MockQueryable.EntityFrameworkCore.svg)](https://www.nuget.org/packages/MockQueryable.EntityFrameworkCore/)|`Install-Package MockQueryable.EntityFrameworkCore` |
+|[![Download](https://img.shields.io/nuget/dt/MockQueryable.Moq.svg?label=MockQueryable.Moq)](https://www.nuget.org/packages/MockQueryable.Moq/)|[![Version](https://img.shields.io/nuget/v/MockQueryable.Moq.svg)](https://www.nuget.org/packages/MockQueryable.Moq/)|`Install-Package MockQueryable.Moq` |
+|[![Download](https://img.shields.io/nuget/dt/MockQueryable.NSubstitute.svg?label=MockQueryable.NSubstitute)](https://www.nuget.org/packages/MockQueryable.NSubstitute/)|[![Version](https://img.shields.io/nuget/v/MockQueryable.NSubstitute.svg)](https://www.nuget.org/packages/MockQueryable.NSubstitute/)|`Install-Package MockQueryable.NSubstitute` |
+|[![Download](https://img.shields.io/nuget/dt/MockQueryable.FakeItEasy.svg?label=MockQueryable.FakeItEasy)](https://www.nuget.org/packages/MockQueryable.FakeItEasy/)|[![Version](https://img.shields.io/nuget/v/MockQueryable.FakeItEasy.svg)](https://www.nuget.org/packages/MockQueryable.FakeItEasy/)|`Install-Package MockQueryable.FakeItEasy` |
 
 ---
 
@@ -136,6 +136,7 @@ You can even create your own extensions. Check the [example here](https://github
 See the [sample project](https://github.com/romantitov/MockQueryable/tree/master/src/MockQueryable/MockQueryable.Sample) for working examples.
 
 ---
+
 
 
 
