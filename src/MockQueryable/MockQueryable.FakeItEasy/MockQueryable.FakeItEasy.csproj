@@ -14,12 +14,13 @@
 	  <PackageTags>Mock EntityFrameworkCore Queryable mock EF UnitTests EntityFrameworkCore</PackageTags>
 	  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	  <PackageReleaseNotes>
-		  #104 Microsoft.EntityFrameworkCore and Microsoft.EntityFrameworkCore.Relational v 10.0.2 - supported
-		  #98 AutoMapper from 15.1.0 to 16.0.0
+		  #107 Microsoft.EntityFrameworkCore and Microsoft.EntityFrameworkCore.Relational v 10.0.5 - supported
+		  #113 AutoMapper to 16.1.1
+		  #105 FakeItEasy to 9.0.1
 	  </PackageReleaseNotes>
-	  <Version>10.0.2</Version>
-	  <AssemblyVersion>10.0.0.2</AssemblyVersion>
-	  <FileVersion>10.0.0.2</FileVersion>
+	  <Version>10.0.5</Version>
+	  <AssemblyVersion>10.0.0.5</AssemblyVersion>
+	  <FileVersion>10.0.0.5</FileVersion>
     <Company></Company>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
 	<PackageReadmeFile>README.md</PackageReadmeFile>
@@ -27,7 +28,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FakeItEasy" Version="8.3.0" />
+    <PackageReference Include="FakeItEasy" Version="9.0.1" />
   </ItemGroup>
 
   <ItemGroup>
