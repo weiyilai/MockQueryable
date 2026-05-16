@@ -1,0 +1,67 @@
+name: Update Download Badge
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  downloads:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Generate badge
+        shell: bash
+        run: |
+          packages=(
+            MockQueryable.Core
+            MockQueryable.EntityFrameworkCore
+            MockQueryable.Moq
+            MockQueryable.NSubstitute
+            MockQueryable.FakeItEasy
+          )
+
+          total=0
+
+          for pkg in "${packages[@]}"; do
+            count=$(curl -s "https://api.nuget.org/v3/registration5-gz-semver2/${pkg,,}/index.json" \
+              | jq '[.items[].items[].catalogEntry.downloads] | add')
+
+            total=$((total + count))
+          done
+
+          if [ "$total" -ge 1000000 ]; then
+            display=$(awk "BEGIN {printf \"%.1fM\", $total/1000000}")
+          elif [ "$total" -ge 1000 ]; then
+            display=$(awk "BEGIN {printf \"%.1fK\", $total/1000}")
+          else
+            display="$total"
+          fi
+
+          mkdir -p .github/badges
+
+          cat > .github/badges/downloads.json <<EOF
+          {
+            "schemaVersion": 1,
+            "label": "total downloads",
+            "message": "$display",
+            "color": "brightgreen"
+          }
+          EOF
+
+      - name: Commit badge
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+
+          git add .github/badges/downloads.json
+
+          git diff --cached --quiet || git commit -m "Update download badge"
+
+          git push
