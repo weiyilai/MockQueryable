@@ -56,7 +56,7 @@ jobs:
           cat > .github/badges/downloads.json <<EOF
           {
             "schemaVersion": 1,
-            "label": "total downloads",
+            "label": "Total Downloads",
             "message": "$display",
             "color": "brightgreen"
           }
