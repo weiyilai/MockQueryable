@@ -1,11 +1,11 @@
 name: dotnet-build
-description: 'Composite .Net build action'
+description: Composite .NET build action
 
 inputs:
   dotnet-version:
     default: '10.0.x'
     required: false
-    description: '.Net version'
+    description: '.NET version'
 
   solution:
     default: 'src/MockQueryable/*.sln'
@@ -19,7 +19,6 @@ inputs:
 
 runs:
   using: composite
-
   steps:
     - name: Setup .NET
       uses: actions/setup-dotnet@v5
