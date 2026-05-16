@@ -1,0 +1,38 @@
+name: dotnet-build
+description: 'Composite .Net build action'
+
+inputs:
+  dotnet-version:
+    default: '10.0.x'
+    required: false
+    description: '.Net version'
+
+  solution:
+    default: 'src/MockQueryable/*.sln'
+    required: false
+    description: 'Solution path'
+
+  configuration:
+    default: 'Release'
+    required: false
+    description: 'Build configuration'
+
+runs:
+  using: composite
+
+  steps:
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v5
+      with:
+        dotnet-version: ${{ inputs.dotnet-version }}
+
+    - name: Restore
+      shell: bash
+      run: dotnet restore ${{ inputs.solution }}
+
+    - name: Build
+      shell: bash
+      run: |
+        dotnet build ${{ inputs.solution }} \
+          --configuration ${{ inputs.configuration }} \
+          --no-restore

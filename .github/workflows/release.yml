@@ -11,6 +11,11 @@ permissions:
   attestations: write
   artifact-metadata: write
 
+env:
+  DOTNET_VERSION: 10.0.x
+  SOLUTION: src/MockQueryable/*.sln
+  CONFIGURATION: Release
+
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -18,22 +23,18 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v5
-        with:
-          dotnet-version: '10.0.x'
-
-      - name: Restore
-        run: dotnet restore src/MockQueryable/*.sln
-
       - name: Build
-        run: dotnet build src/MockQueryable/*.sln --configuration Release --no-restore
+        uses: ./.github/actions/dotnet-build
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+          solution: ${{ env.SOLUTION }}
+          configuration: ${{ env.CONFIGURATION }}
 
       - name: Pack
         run: |
           mkdir -p artifacts
-          dotnet pack src/MockQueryable/*.sln \
-            --configuration Release \
+          dotnet pack ${{ env.SOLUTION }} \
+            --configuration ${{ env.CONFIGURATION }} \
             --no-build \
             --output ./artifacts
 
@@ -47,3 +48,5 @@ jobs:
         with:
           files: ./artifacts/*.nupkg
           generate_release_notes: true
+          # prerelease if a tag contains "-"
+          prerelease: ${{ contains(github.ref_name, '-') }}
