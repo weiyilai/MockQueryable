@@ -30,9 +30,14 @@ jobs:
           total=0
 
           for pkg in "${packages[@]}"; do
-            count=$(curl -s "https://api.nuget.org/v3/registration5-gz-semver2/${pkg,,}/index.json" \
-              | jq '[.items[].items[].catalogEntry.downloads] | add')
-
+            package_id="${pkg,,}"
+            url="https://api.nuget.org/v3/registration5-gz-semver2/${package_id}/index.json"
+          
+            count=$(curl -fsSL --compressed "$url" \
+              | jq '[.items[].items[]?.catalogEntry.downloads // 0] | add // 0')
+          
+            echo "$pkg: $count"
+          
             total=$((total + count))
           done
 
