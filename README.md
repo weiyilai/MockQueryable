@@ -8,7 +8,7 @@ Extensions for mocking [Entity Framework Core](https://github.com/dotnet/efcore)
 
 ---
 
-## 📦 NuGet Packages: [![Total Downloads](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/ramantsitou/MockQueryable/master/.github/badges/downloads.json)](https://codecov.io/github/romantitov/MockQueryable)
+## 📦 NuGet Packages: [![Total Downloads](https://img.shields.io/endpoint?url=https://wandering-glade-337c.raman-tsitou.workers.dev/)](https://codecov.io/github/romantitov/MockQueryable)
 | Package | Latest Version | Install via Package Manager |
 |-------- |----------------|-----------------------------|
 |[![Download](https://img.shields.io/nuget/dt/MockQueryable.Core.svg?label=MockQueryable.Core)](https://www.nuget.org/packages/MockQueryable.Core/)|[![Version](https://img.shields.io/nuget/v/MockQueryable.Core.svg)](https://www.nuget.org/packages/MockQueryable.Core/)|`Install-Package MockQueryable.Core` |
