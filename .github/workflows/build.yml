@@ -1,10 +1,15 @@
-name: .NET Core
+name: build
 
 on:
   push:
 
 permissions:
   contents: read
+
+env:
+  DOTNET_VERSION: 10.0.x
+  SOLUTION: src/MockQueryable/*.sln
+  CONFIGURATION: Release
 
 jobs:
   build:
@@ -13,23 +18,19 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v5
-        with:
-          dotnet-version: '10.0.x'
-
-      - name: Restore
-        run: dotnet restore src/MockQueryable/*.sln
-
       - name: Build
-        run: dotnet build src/MockQueryable/*.sln --configuration Release --no-restore
+        uses: ./.github/actions/dotnet-build
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+          solution: ${{ env.SOLUTION }}
+          configuration: ${{ env.CONFIGURATION }}
 
       - name: Test with coverage
         run: |
           mkdir -p TestResults
 
-          dotnet test src/MockQueryable/*.sln \
-            --configuration Release \
+          dotnet test ${{ env.SOLUTION }} \
+            --configuration ${{ env.CONFIGURATION }} \
             --no-build \
             /p:CollectCoverage=true \
             /p:CoverletOutput="$(pwd)/TestResults/coverage.opencover.xml" \

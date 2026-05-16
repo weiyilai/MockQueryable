@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.13.35931.197 d17.13
+# Visual Studio Version 18
+VisualStudioVersion = 18.6.11806.211 stable
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MockQueryable.Core", "MockQueryable.Core\MockQueryable.Core.csproj", "{7C85327C-5EE5-4C74-A1E5-9B7046CA6CFE}"
 EndProject
@@ -17,9 +17,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MockQueryable.EntityFramewo
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
 	ProjectSection(SolutionItems) = preProject
-		..\..\.github\workflows\dotnetcore.yml = ..\..\.github\workflows\dotnetcore.yml
+		..\..\.github\actions\dotnet-build\action.yml = ..\..\.github\actions\dotnet-build\action.yml
+		..\..\.github\workflows\build.yml = ..\..\.github\workflows\build.yml
+		..\..\.github\dependabot.yml = ..\..\.github\dependabot.yml
 		..\..\LICENSE = ..\..\LICENSE
 		..\..\README.md = ..\..\README.md
+		..\..\.github\workflows\release.yml = ..\..\.github\workflows\release.yml
 	EndProjectSection
 EndProject
 Global
