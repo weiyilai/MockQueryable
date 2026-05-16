@@ -28,11 +28,15 @@ jobs:
           total=0
 
           for pkg in "${packages[@]}"; do
-            package_id="${pkg,,}"
-            url="https://api.nuget.org/v3/registration5-gz-semver2/${package_id}/index.json"
+            url="https://azuresearch-usnc.nuget.org/query?q=packageid:${pkg}&prerelease=true&semVerLevel=2.0.0"
           
-            count=$(curl -fsSL --compressed "$url" \
-              | jq '[.items[].items[]?.catalogEntry.downloads // 0] | add // 0')
+            count=$(curl -fsSL "$url" \
+              | jq --arg pkg "$pkg" '
+                  [.data[]
+                   | select((.id | ascii_downcase) == ($pkg | ascii_downcase))
+                   | .totalDownloads
+                  ][0] // 0
+                ')
           
             echo "$pkg: $count"
           
