@@ -1,9 +1,6 @@
 name: Update Download Badge
 
 on:
-  schedule:
-    - cron: '0 0 * * *'
-
   workflow_dispatch:
 
 permissions:
@@ -60,13 +57,13 @@ jobs:
           }
           EOF
 
-      - name: Commit badge
-        run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-
-          git add .github/badges/downloads.json
-
-          git diff --cached --quiet || git commit -m "Update download badge"
-
-          git push
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: Update download badge
+          title: Update download badge
+          body: Automated update of total NuGet downloads badge.
+          branch: automation/update-download-badge
+          delete-branch: true
+          add-paths: |
+            .github/badges/downloads.json
