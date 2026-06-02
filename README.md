@@ -63,7 +63,7 @@ MockQueryable creates a custom implementation of:
 
 allowing EF Core async extensions to execute against in-memory collections.
 
-👷🏻‍See [Architecture](docs/Architecture.md).
+👷🏻‍See [Architecture](docs/ARCHITECTURE.md).
 
 ---
 ## 🚀 Getting Started
