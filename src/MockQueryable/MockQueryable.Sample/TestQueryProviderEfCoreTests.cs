@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace MockQueryable.Sample;
@@ -125,8 +126,129 @@ public class TestQueryProviderEfCoreTests
         Assert.That(users.Any(x => x.Id == userId), Is.False);
     }
 
+    [Test]
+    public async Task BuildMock_ExecuteUpdateAsync_UpdatesMatchingEntitiesInSourceCollection()
+    {
+        var userId = Guid.NewGuid();
+        var users = TestDataHelper.CreateUserList(userId);
+        const string expectedName = "Updated Name";
+
+        var query = users.BuildMock();
+        var affected = await query
+            .Where(x => x.Id == userId)
+            .ExecuteUpdateAsync(setters => setters
+                .SetProperty(x => x.FirstName, expectedName)
+                .SetProperty(x => x.LastName, expectedName));
+
+        var updatedUser = users.Single(x => x.Id == userId);
+        Assert.That(affected, Is.EqualTo(1));
+        Assert.That(updatedUser.FirstName, Is.EqualTo(expectedName));
+        Assert.That(updatedUser.LastName, Is.EqualTo(expectedName));
+    }
+
+    [Test]
+    public void ApplyUpdateChangesToDbSet_WhenSetterArgumentIsNotNewArray_DoesNothing()
+    {
+        var users = TestDataHelper.CreateUserList();
+        var originalUsers = users
+            .Select(x => new { x.Id, x.FirstName, x.LastName, x.DateOfBirth })
+            .ToList();
+        var methodCall = Expression.Call(
+            typeof(TestQueryProviderEfCoreTests),
+            nameof(FakeExecuteUpdate),
+            [typeof(UserEntity)],
+            users.AsQueryable().Expression,
+            Expression.Constant("not-an-update-array"));
+
+        InvokeApplyUpdateChangesToDbSet(users, methodCall);
+
+        Assert.That(
+            users.Select(x => new { x.Id, x.FirstName, x.LastName, x.DateOfBirth }),
+            Is.EqualTo(originalUsers));
+    }
+
+    [Test]
+    public void ExtractValue_WhenExpressionIsQuotedLambdaWithNoParameters_ReturnsComputedValue()
+    {
+        var expected = new DateTime(2042, 10, 14);
+        Expression expression = Expression.Quote(Expression.Lambda(Expression.Constant(expected)));
+
+        var result = InvokeExtractValue(expression, TestDataHelper.CreateUserList()[0]);
+
+        Assert.That(result, Is.EqualTo(expected));
+    }
+
+    [Test]
+    public void ExtractValue_WhenExpressionIsQuotedLambdaWithOneParameter_UsesItemValue()
+    {
+        var user = TestDataHelper.CreateUserList()[0];
+        var parameter = Expression.Parameter(typeof(UserEntity), "x");
+        Expression expression = Expression.Quote(
+            Expression.Lambda(
+                Expression.Property(parameter, nameof(UserEntity.FirstName)),
+                parameter));
+
+        var result = InvokeExtractValue(expression, user);
+
+        Assert.That(result, Is.EqualTo(user.FirstName));
+    }
+
+    [Test]
+    public void ExtractValue_WhenLambdaHasMoreThanOneParameter_ThrowsInvalidOperationException()
+    {
+        var first = Expression.Parameter(typeof(UserEntity), "first");
+        var second = Expression.Parameter(typeof(UserEntity), "second");
+        Expression expression = Expression.Lambda(
+            Expression.Constant("invalid"),
+            first,
+            second);
+
+        var exception = Assert.Throws<TargetInvocationException>(() =>
+            InvokeExtractValue(expression, TestDataHelper.CreateUserList()[0]));
+
+        Assert.That(exception?.InnerException, Is.TypeOf<InvalidOperationException>());
+        Assert.That(
+            exception?.InnerException?.Message,
+            Is.EqualTo("Supported only lambdas with 0 or 1 params."));
+    }
+
+    [Test]
+    public void ExtractValue_WhenExpressionIsNotConstantOrLambda_CompilesParameterlessExpression()
+    {
+        Expression expression = Expression.Property(
+            Expression.Constant(new DateTime(2030, 5, 7)),
+            nameof(DateTime.Year));
+
+        var result = InvokeExtractValue(expression, TestDataHelper.CreateUserList()[0]);
+
+        Assert.That(result, Is.EqualTo(2030));
+    }
+
     private static TestAsyncEnumerableEfCore<UserEntity, TestExpressionVisitor> CreateProvider(List<UserEntity> users)
     {
         return new TestAsyncEnumerableEfCore<UserEntity, TestExpressionVisitor>(users, _ => { });
+    }
+
+    private static void InvokeApplyUpdateChangesToDbSet(
+        IEnumerable<UserEntity> users,
+        MethodCallExpression methodCallExpression)
+    {
+        var method = typeof(TestAsyncEnumerableEfCore<UserEntity, TestExpressionVisitor>)
+            .GetMethod("ApplyUpdateChangesToDbSet", BindingFlags.NonPublic | BindingFlags.Static);
+
+        method!.Invoke(null, [users, methodCallExpression]);
+    }
+
+    private static object InvokeExtractValue(Expression expression, UserEntity item)
+    {
+        var method = typeof(TestAsyncEnumerableEfCore<UserEntity, TestExpressionVisitor>)
+            .GetMethod("ExtractValue", BindingFlags.NonPublic | BindingFlags.Static);
+
+        return method!.Invoke(null, [expression, item]);
+    }
+
+    private static int FakeExecuteUpdate<TEntity>(IQueryable<TEntity> source, object setters)
+    {
+        return 0;
     }
 }
